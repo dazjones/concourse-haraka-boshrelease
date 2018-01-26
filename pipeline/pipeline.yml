@@ -1,0 +1,28 @@
+---
+resources:
+    - name: haraka-boshrelease
+      type: git
+      source:
+          uri: https://github.com/finkit/haraka-boshrelease.git
+          branch: master
+    - name: bosh-on-gcp
+      type: git
+      source:
+          uri: https://github.com/finkit/bosh-on-gcp
+          branch: master
+
+jobs:
+    - name: job-haraka-boshrelease
+      public: true
+      plan:
+          - get: bosh-on-gcp
+          - get: haraka-boshrelease
+          - task: run
+            config:
+                platform: linux
+                image_resource:
+                    type: docker-image
+                    source: {repository: busybox}
+                run:
+                    path: ls
+                    args: [-la]
